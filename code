@@ -1,0 +1,12 @@
+	@EventHandler
+	public void onPlayerDeath(PlayerDeathEvent e){
+		Player p = e.getEntity().getKiller();
+		e.setDeathMessage(ChatColor.GRAY+"["+ ChatColor.YELLOW +"KillInfo"+ ChatColor.GRAY +"] "+ ChatColor.DARK_RED +""+ e.getEntity().getName() +""+ ChatColor.GRAY +"は"+ ChatColor.DARK_RED +""+ p.getName() +""+ ChatColor.GRAY +"によって殺された！");
+		ItemStack IRON_INGOT = new ItemStack(Material.IRON_INGOT,1);
+		ItemMeta IRON_INGOTmeta = IRON_INGOT.getItemMeta();
+		IRON_INGOTmeta.setDisplayName(ChatColor.AQUA +"Silver");
+		IRON_INGOT.setItemMeta(IRON_INGOTmeta);
+		PlayerInventory pinv = p.getInventory();
+		pinv.addItem(IRON_INGOT);
+		p.playSound(p.getLocation(), Sound.NOTE_PLING,1, 1);
+	}
