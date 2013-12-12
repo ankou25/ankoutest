@@ -1,12 +1,60 @@
-	@EventHandler
-	public void onPlayerDeath(PlayerDeathEvent e){
-		Player p = e.getEntity().getKiller();
-		e.setDeathMessage(ChatColor.GRAY+"["+ ChatColor.YELLOW +"KillInfo"+ ChatColor.GRAY +"] "+ ChatColor.DARK_RED +""+ e.getEntity().getName() +""+ ChatColor.GRAY +"は"+ ChatColor.DARK_RED +""+ p.getName() +""+ ChatColor.GRAY +"によって殺された！");
-		ItemStack IRON_INGOT = new ItemStack(Material.IRON_INGOT,1);
-		ItemMeta IRON_INGOTmeta = IRON_INGOT.getItemMeta();
-		IRON_INGOTmeta.setDisplayName(ChatColor.AQUA +"Silver");
-		IRON_INGOT.setItemMeta(IRON_INGOTmeta);
-		PlayerInventory pinv = p.getInventory();
-		pinv.addItem(IRON_INGOT);
-		p.playSound(p.getLocation(), Sound.NOTE_PLING,1, 1);
+package com.gmail.ankou2525.tamesi;
+
+import java.util.logging.Logger;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.World;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class Otamesi extends JavaPlugin implements Listener{
+	private boolean start;
+
+	Logger log;
+
+	public void onEnable(){
+		log = this.getLogger();
+		log.info("有効になりました。");
+		getServer().getPluginManager().registerEvents(this, this);
 	}
+	public void onDisable(){
+		log.info("無効になりました。");
+	}
+	public boolean onCommand(CommandSender sender, Command cmd, String label, final String[] args) {
+		if(cmd.getName().equalsIgnoreCase("testgame")){
+			if (args[0].equalsIgnoreCase( "set")){
+				this.start = true;
+				return true;
+			}
+			if (args[0].equalsIgnoreCase( "end")){
+				this.start = false;
+				return true;
+			}
+			if (args[0].equalsIgnoreCase( "start")){
+				if(this.start){
+					Bukkit.broadcastMessage(ChatColor.GOLD+"試合を開始します。");
+				}
+				if(!this.start){
+					Player p = (Player) sender;
+					p.sendMessage(ChatColor.RED+"/testgame set コマンドを実行してください！");
+				}
+			}
+		}
+		return false;
+	}
+}
